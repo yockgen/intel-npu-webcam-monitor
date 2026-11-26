@@ -38,13 +38,11 @@ The model files are local runtime artifacts and are intentionally not tracked by
 yolo export model=yolo11n.pt format=openvino imgsz=640
 ```
 
-Ultralytics downloads `yolo11n.pt` if needed. Then start the monitor:
+Ultralytics downloads `yolo11n.pt` if needed. Start the monitor with `run_monitor.bat`. It launches through the virtual environment's `pythonw.exe`, detached from the command prompt, so minimizing the terminal does not minimize the camera preview. Events and errors are recorded in `monitor.log`.
 
-```bat
-python npu.py
-```
+To stop the background monitor, run `stop_monitor.bat`; it exits after the next camera frame. Press Esc to stop while the preview is open. For console-based debugging, run `python npu.py` directly and use Ctrl+C to stop.
 
-The script requests `device="intel:npu"` for inference. The preview stays open until the count remains below two for the configured close delay. Press Esc while the preview is open, or Ctrl+C in the terminal, to stop it. The webcam remains active while the script runs, including when the preview window is hidden.
+The script requests `device="intel:npu"` for inference. The preview stays open until the count remains below two for the configured close delay. It attempts to restore the preview if minimized while the alert is active and bring it forward when the alert first starts. Windows may restrict foreground activation. The webcam remains active while the script runs, including when the preview window is hidden.
 
 This is a person-count trigger, not a directional or proximity detector: it opens the preview when two or more people are visible, but does not determine who is behind you or whether someone is approaching.
 

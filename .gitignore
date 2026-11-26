@@ -2,5 +2,7 @@
 __pycache__/
 *.py[cod]
 /snapshots/
+/monitor.log
+/.stop_monitor
 /yolo11n.pt
 /yolo11n_openvino_model/
