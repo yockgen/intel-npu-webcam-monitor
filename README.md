@@ -1,6 +1,6 @@
 # Windows NPU Webcam Monitor
 
-A local webcam person detector using Ultralytics YOLO11n and OpenVINO on an Intel NPU. Inference and image handling run on the laptop. The script opens a preview when at least two people are detected in the camera view and saves a snapshot when that threshold is first reached.
+Designed to monitor the space behind you while you face your screen. The webcam uses Ultralytics YOLO11n and OpenVINO on an Intel NPU to detect people in view; when it sees at least two people (you and someone else), it opens a preview and saves a snapshot. Detection and image handling run locally on your laptop. This is a person-count trigger, not directional tracking, so the camera must be positioned to see the area you want to monitor.
 
 ## Requirements
 
