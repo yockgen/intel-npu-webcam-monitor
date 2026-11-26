@@ -8,9 +8,29 @@ TARGET_FPS  = 8        # lower = less power
 MIN_PEOPLE  = 2        # show window when count >= this
 CLOSE_AFTER = 2        # seconds below MIN_PEOPLE before closing (avoids flicker; 0 = instant)
 SNAP_DIR    = "snapshots"
+RETENTION_SECONDS = 3 * 60 * 60
+CLEANUP_INTERVAL = 60
 WIN         = "NPU monitor"
 
+def cleanup_old_snapshots():
+    cutoff = time.time() - RETENTION_SECONDS
+    removed = 0
+    for entry in os.scandir(SNAP_DIR):
+        if not entry.name.lower().endswith(".jpg"):
+            continue
+        try:
+            if entry.is_file() and entry.stat().st_mtime < cutoff:
+                os.remove(entry.path)
+                removed += 1
+        except FileNotFoundError:
+            pass
+    return removed
+
 os.makedirs(SNAP_DIR, exist_ok=True)
+removed = cleanup_old_snapshots()
+if removed:
+    print(f"Removed {removed} snapshot(s) older than 3 hours")
+
 model = YOLO(MODEL_DIR, task="detect")
 cap = cv2.VideoCapture(0)
 
@@ -18,10 +38,17 @@ window_open = False
 crowd = False                 # True while >= MIN_PEOPLE are present
 last_crowd_seen = 0.0
 interval = 1.0 / TARGET_FPS
+last_cleanup = time.monotonic()
 
 try:
     while True:
         t0 = time.time()
+        if time.monotonic() - last_cleanup >= CLEANUP_INTERVAL:
+            removed = cleanup_old_snapshots()
+            if removed:
+                print(f"Removed {removed} snapshot(s) older than 3 hours")
+            last_cleanup = time.monotonic()
+
         ok, frame = cap.read()
         if not ok:
             break
