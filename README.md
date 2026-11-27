@@ -48,6 +48,6 @@ This is a person-count trigger, not a directional or proximity detector: it open
 
 ## Local Data and Licensing
 
-Snapshots are written to `snapshots/` when the count first reaches two or more people. JPEG snapshots older than three hours are deleted at startup and checked about once per minute while the monitor runs. The folder, model weights, exported model, and virtual environment are ignored by Git; they remain on this computer and are not included in commits by default. Review snapshots before sharing them.
+Snapshots are written to `snapshots/` when the count first reaches two or more people. JPEG snapshots older than 15 minutes are deleted at startup and checked every 15 seconds while the monitor runs. The folder, model weights, exported model, and virtual environment are ignored by Git; they remain on this computer and are not included in commits by default. Review snapshots before sharing them.
 
 The exported model metadata identifies YOLO11n and declares AGPL-3.0. The installed Ultralytics package also declares AGPL-3.0. Review the applicable license terms before redistributing this project or using it in a deployment.

@@ -12,8 +12,8 @@ TARGET_FPS  = 8        # lower = less power
 MIN_PEOPLE  = 2        # show window when count >= this
 CLOSE_AFTER = 2        # seconds below MIN_PEOPLE before closing (avoids flicker; 0 = instant)
 SNAP_DIR    = "snapshots"
-RETENTION_SECONDS = 3 * 60 * 60
-CLEANUP_INTERVAL = 60
+RETENTION_SECONDS = 15 * 60
+CLEANUP_INTERVAL = 15
 WIN         = "NPU monitor"
 SW_RESTORE  = 9
 LOG_FILE    = "monitor.log"
@@ -71,7 +71,7 @@ def restore_camera_window(activate=False):
 os.makedirs(SNAP_DIR, exist_ok=True)
 removed = cleanup_old_snapshots()
 if removed:
-    logging.info("Removed %s snapshot(s) older than 3 hours", removed)
+    logging.info("Removed %s snapshot(s) older than 15 minutes", removed)
 
 model = YOLO(MODEL_DIR, task="detect")
 cap = cv2.VideoCapture(0)
@@ -96,7 +96,7 @@ try:
         if time.monotonic() - last_cleanup >= CLEANUP_INTERVAL:
             removed = cleanup_old_snapshots()
             if removed:
-                logging.info("Removed %s snapshot(s) older than 3 hours", removed)
+                logging.info("Removed %s snapshot(s) older than 15 minutes", removed)
             last_cleanup = time.monotonic()
 
         ok, frame = cap.read()
